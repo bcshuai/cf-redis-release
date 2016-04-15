@@ -2,7 +2,7 @@
 
 ssh-add -l
 
-if [ $? -ne 0 ]; then
+if [ $? -ne 1 ]; then
   echo "Please add your ssh key"
   exit 1
 fi
