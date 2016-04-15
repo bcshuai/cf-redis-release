@@ -28,7 +28,7 @@ redis:
   process_check_interval: <%= p('redis.broker.process_check_interval') %>
   start_redis_timeout: <%= p('redis.broker.start_redis_timeout') %>
   service_instance_limit: <%= p('redis.broker.service_instance_limit') %>
-  serviceKeysSupported: <%= p('redis.broker.serviceKeysSupported') %>
+  serviceKeysSupported: false
   dedicated:
     nodes: <%= p('redis.broker.dedicated_nodes') %>
     port: <%= p('redis.broker.dedicated_port') %>
