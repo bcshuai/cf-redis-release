@@ -15,7 +15,6 @@
   end
   ip = discover_external_ip
   broker = p('redis')
-  puts broker
 %>
 
 redis:
@@ -30,7 +29,7 @@ redis:
   process_check_interval: <%= p('redis.broker.process_check_interval') %>
   start_redis_timeout: <%= p('redis.broker.start_redis_timeout') %>
   service_instance_limit: <%= p('redis.broker.service_instance_limit') %>
-  serviceKeysSupported: <%= broker['service_keys_supported'] %>
+  serviceKeysSupported: <%= p('redis.broker.goodServiceKeysSupported') %>
   dedicated:
     nodes: <%= p('redis.broker.dedicated_nodes') %>
     port: <%= p('redis.broker.dedicated_port') %>
