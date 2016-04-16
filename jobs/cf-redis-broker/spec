@@ -183,7 +183,7 @@ properties:
   redis.broker.test:
     default: value
     description: for testing
-  redis.broker.serviceKeysSupported
+  redis.broker.serviceKeysSupported:
     defalut: false
     description: Support service keys or not
 ### End of Block ######
