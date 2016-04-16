@@ -178,3 +178,12 @@ properties:
     description: The user to use when authenticating with NATS
   cf.nats.password:
     description: The password to use when authenticating with NATS
+
+## added by Bin Cheng Shuai ######
+  redis.broker.test:
+    default: value
+    description: for testing
+  redis.broker.serviceKeysSupported
+    defalut: false
+    description: Support service keys or not
+### End of Block ######
