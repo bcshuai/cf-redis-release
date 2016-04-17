@@ -186,4 +186,21 @@ properties:
   redis.broker.serviceKeysSupported:
     defalut: false
     description: Support service keys or not
+  redis.broker.services:
+    description: 'Services and plans offered by the broker'
+    example: |
+      plans:
+      - name: 100mb
+        id: REPLACE-WITH-A-UNIQUE-GUID
+        description: Shared MySQL Server
+        max_storage_mb: 100 
+        max_user_connections: 20
+      - name: 1gb 
+        id: REPLACE-WITH-A-UNIQUE-GUID
+        description: Shared MySQL Server
+        max_storage_mb: 1000
+        max_user_connections: 40
+  redis.broker.max_client_connections_default:
+    description: 'Default maxinium number of user clients'
+    default: 20
 ### End of Block ######
