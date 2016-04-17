@@ -20,5 +20,7 @@ cf api $SKIP_SSL_VALIDATION $CF_API_URL
 cf auth $CF_ADMIN_USERNAME $CF_ADMIN_PASSWORD
 cf create-service-broker $BROKER_NAME $BROKER_USERNAME $BROKER_PASSWORD $BROKER_URL || cf update-service-broker $BROKER_NAME $BROKER_USERNAME $BROKER_PASSWORD $BROKER_URL
 <% if p("redis.broker.enable_service_access") %>
-cf enable-service-access $BROKER_SERVICE_NAME
+  <% p("redis.broker.services").each do | service | %>
+cf enable-service-access <%= service["name"] %>
+  <% end %>
 <% end %>

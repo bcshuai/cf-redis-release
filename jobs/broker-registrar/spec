@@ -34,3 +34,8 @@ properties:
   redis.broker.service_name:
     description: 'Service name'
     default: p-redis
+  # add by Bin Cheng Shuai ###
+  redis.broker.services:
+    description: 'Service List'
+    default: []
+  #######End of Block##########

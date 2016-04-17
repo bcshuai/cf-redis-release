@@ -33,10 +33,10 @@ redis:
     statefile_path: <%= p('redis.statefile_path') %>
   services:
   <% p('redis.broker.services').each do |service| %>
-  - id: service["id"]
-    name: service["name"]
-    plan_updateable: service["plan_updateable"]
-    description: service["description"]
+  - id: <%= service["id"] %>
+    name: <%= service["name"] %>
+    plan_updateable: <%= service["plan_updateable"] %>
+    description: <%= service["description"] %>
     metadata:
       displayName: <%= service['metadata']['displayName'] %>
       imageUrl: <%= service['metadata']['imageUrl'] %>
@@ -103,7 +103,7 @@ redis:
 
           displayName: <%= display_name %>
     <% end %>
-
+  <% end %>
 auth:
   username: <%= p('redis.broker.auth.username') %>
   password: <%= p('redis.broker.auth.password') %>
