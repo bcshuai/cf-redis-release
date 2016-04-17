@@ -46,6 +46,10 @@ redis:
       supportUrl: <%= service['metadata']['supportUrl'] %>
       serviceKeysSupported: <%= service['metadata']['serviceKeysSupported'] %>
       type: <%= service['metadata']['type'] %>
+    tags:
+    <% (service['tags'] || []).each do |tag| %>
+    - <%= tag %>
+    <% end %>
     plans:
     <% (service['plans'] || []).each do |plan| %>
       - id: <%= plan['id'] || plan['guid'] %>
