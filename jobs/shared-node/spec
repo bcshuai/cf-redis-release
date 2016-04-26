@@ -2,11 +2,11 @@
 name: shared-node
 
 templates:
-  redis-agent_ctl.erb: bin/cf-redis-broker_ctl
+  redis-agent_ctl.erb: bin/redis-agent_ctl
   process-watcher_ctl.erb: bin/process-watcher_ctl
   nginx_ctl.erb: bin/nginx_ctl
 
-  agent.yml.erb: config/broker.yml
+  agent.yml.erb: config/agent.yml
   nginx.conf.erb: config/nginx.conf
   redis.conf.erb: config/redis.conf
 
