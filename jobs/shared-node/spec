@@ -214,4 +214,5 @@ properties:
   redis.agent.backend_port:
     description: The backend port for the redis-agent process to listen on
     default: 9876
+    
 ### End of Block ######
