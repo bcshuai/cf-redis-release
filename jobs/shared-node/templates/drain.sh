@@ -2,12 +2,12 @@
 
 set -e
 
-log_dir=/var/vcap/sys/log/cf-redis-broker
+log_dir=/var/vcap/sys/log/shared-node
 
 disable_process_watcher() {
     echo "`date +%c` - Disabling process watcher" >> ${log_dir}/drain.log 2>&1
 
-    process_watcher_pidfile="/var/vcap/sys/run/cf-redis-broker/process-watcher.pid"
+    process_watcher_pidfile="/var/vcap/sys/run/shared-node/process-watcher.pid"
 
     if [ -f $process_watcher_pidfile ]
     then
