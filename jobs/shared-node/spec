@@ -1,16 +1,14 @@
 ---
-name: cf-redis-broker
+name: shared-node
 
 templates:
-  cf-redis-broker_ctl.erb: bin/cf-redis-broker_ctl
+  redis-agent_ctl.erb: bin/cf-redis-broker_ctl
   process-watcher_ctl.erb: bin/process-watcher_ctl
   nginx_ctl.erb: bin/nginx_ctl
-  route-registrar_ctl: bin/route-registrar_ctl
 
-  broker.yml.erb: config/broker.yml
+  agent.yml.erb: config/broker.yml
   nginx.conf.erb: config/nginx.conf
   redis.conf.erb: config/redis.conf
-  registrar_settings.yml.erb: config/registrar_settings.yml
 
   drain.sh: bin/drain
 
