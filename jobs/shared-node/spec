@@ -1,0 +1,205 @@
+---
+name: cf-redis-broker
+
+templates:
+  cf-redis-broker_ctl.erb: bin/cf-redis-broker_ctl
+  process-watcher_ctl.erb: bin/process-watcher_ctl
+  nginx_ctl.erb: bin/nginx_ctl
+  route-registrar_ctl: bin/route-registrar_ctl
+
+  broker.yml.erb: config/broker.yml
+  nginx.conf.erb: config/nginx.conf
+  redis.conf.erb: config/redis.conf
+  registrar_settings.yml.erb: config/registrar_settings.yml
+
+  drain.sh: bin/drain
+
+packages:
+- cf-redis-broker
+- redis-common
+- nginx
+- redis
+- python
+
+properties:
+  redis.statefile_path:
+    default: /var/vcap/store/cf-redis-broker/statefile.json
+    description: Path to the broker statefile
+  redis.data_directory:
+    default: /var/vcap/store/cf-redis-broker/redis-data
+    description: The directory which stores the persisted broker data
+  redis.log_directory:
+    default: /var/vcap/sys/log/redis
+    description: The directory which stores the redis server logs
+  redis.conf_path:
+    default: /var/vcap/jobs/cf-redis-broker/config/redis.conf
+    description: The shared conf file for all Redis instances
+  redis.maxmemory:
+    default: 524288000
+    description: The maximum memory (in bytes) that Redis will use before evicting old data
+  redis.config_command:
+    description: The name of the obfuscated redis CONFIG command.
+  redis.save_command:
+    default: ""
+    description: The name of the obfuscated redis SAVE command.
+  redis.bg_save_command:
+    default: ""
+    description: The name of the obfuscated redis BGSAVE command.
+  redis.client_timeout:
+    default: 0
+    description: Close the connection after a client is idle for N seconds (0 to disable)
+  redis.tcp_keep_alive:
+    default: 0
+    description: TCP keepalive
+  redis.log_level:
+    default: notice
+    description: Specify the server log verbosity level (debug, verbose, notice, warning)
+  redis.databases:
+    default: 16
+    description: Set the number of databases. The default database is DB 0.
+
+################################ SNAPSHOTTING  #################################
+  redis.snapshotting.save:
+    default:
+      - 900 1
+      - 300 10
+      - 60 10000
+    description: save <seconds> <changes>; Will save the DB if both the given number of seconds and the given number of write operations against the DB occurred.
+  redis.snapshotting.stop_writes_on_bgsave_error:
+    default: 'yes'
+    description: This will make the user aware (in an hard way) that data is not persisting on disk properly
+  redis.snapshotting.rdb_compression:
+    default: 'yes'
+    description: Compress string objects using LZF when dump .rdb databases
+  redis.snapshotting.rdb_checksum:
+    default: 'yes'
+    description: RDB files created with checksum disabled have a checksum of zero that will tell the loading code to skip the check.
+
+################################# REPLICATION #################################
+#
+# Master-Slave replication. Use slaveof to make a Redis instance a copy of
+# another Redis server. Note that the configuration is local to the slave
+# so for example it is possible to configure the slave to save the DB with a
+# different interval, or to listen to another port, and so on.
+#
+
+  redis.replication.slave_serve_stale_data:
+    default: 'yes'
+    description:  Master-Slave replication. Use slaveof to make a Redis instance a copy of another Redis server.
+  redis.replication.slave_read_only:
+    default: 'yes'
+    description: Configure a slave instance to accept writes or not.
+  redis.replication.repl_disable_tcp_nodelay:
+    default: 'no'
+    description: Set TCP_NODELAY on the slave socket after SYNC.
+  redis.replication.slave_priority:
+    default: 100
+    description: The slave priority is an integer number published by Redis in the INFO output. It is used by Redis Sentinel in order to select a slave to promote into a master if the master is no longer working correctly.
+
+  redis.lua_time_limit:
+    description: Max execution time of a Lua script in milliseconds.
+    default: 5000
+
+################################## SLOW LOG ###################################
+
+# The Redis Slow Log is a system to log queries that exceeded a specified
+# execution time. The execution time does not include the I/O operations
+# like talking with the client, sending the reply and so forth,
+# but just the time needed to actually execute the command (this is the only
+# stage of command execution where the thread is blocked and can not serve
+# other requests in the meantime).
+
+  redis.slow_log.log_slower_than:
+    description: the execution time, in microseconds, to exceed in order for the command to get logged
+    default: 10000
+
+  redis.slow_log.max_len:
+    description: The length of the slow log. There is no limit to this length. Just be aware that it will consume memory. You can reclaim memory used by the slow log with SLOWLOG RESET.
+    default: 128
+
+  redis.broker.service_name:
+    description: Service name displayed in the catalog metadata
+    default: p-redis
+  redis.broker.service_id:
+    description: Service id displayed in the catalog metadata
+    default: EEA47C3A-569C-4C24-869D-0ADB5B337A4C
+  redis.broker.shared_vm_plan_id:
+    description: Shared-VM plan id displayed in the catalog metadata
+    default: C210CA06-E7E5-4F5D-A5AA-7A2C51CC290E
+  redis.broker.dedicated_vm_plan_id:
+    description: Dedicated-VM plan id displayed in the catalog metadata
+    default: 74E8984C-5F8C-11E4-86BE-07807B3B2589
+  redis.broker.process_check_interval:
+    description: Interval in seconds between checks for dead processes
+    default: 10
+  redis.broker.start_redis_timeout:
+    description: Maximum wait time in seconds for Redis to start up
+    default: 600
+  redis.broker.service_instance_limit:
+    description: The maximum number of instances allowed
+  redis.broker.auth.username:
+    default: admin
+    description: The username for HTTP Basic Auth on the Broker, also used for the agent
+  redis.broker.auth.password:
+    default: admin
+    description: The password for HTTP Basic Auth on the Broker, also used for the agent
+  redis.broker.backend_port:
+    default: 10005
+    description: The port for the broker unicorn process to run on
+  redis.broker.backend_host:
+    default: localhost
+    description: The port for the broker unicorn process to run on
+  redis.broker.subdomain:
+    default: redis-broker
+    description: Subdomain for route registrar
+
+  redis.broker.dedicated_nodes:
+    description: List of node IPs for the dedicated plan
+    default: []
+  redis.broker.dedicated_port:
+    description: The port used by the redis instances
+    default: 6379
+
+  redis.broker.name:
+    default: redis
+    description: Name of the broker, to be used in cf commandline operations and by the broker-registrar
+
+  redis.broker.network:
+    description: The name of the network that the redis broker runs on.
+
+  cf.apps_domain:
+    description: Domain shared by the UAA and CF API eg 'bosh-lite.com'
+  cf.nats.host:
+    description: Hostname/IP of NATS
+  cf.nats.port:
+    description: Port that NATS listens on
+  cf.nats.username:
+    description: The user to use when authenticating with NATS
+  cf.nats.password:
+    description: The password to use when authenticating with NATS
+
+## added by Bin Cheng Shuai ######
+  redis.broker.test:
+    default: value
+    description: for testing
+  redis.broker.serviceKeysSupported:
+    defalut: false
+    description: Support service keys or not
+  redis.broker.services:
+    description: 'Services and plans offered by the broker'
+    example: |
+      plans:
+      - name: 100mb
+        id: REPLACE-WITH-A-UNIQUE-GUID
+        description: Shared MySQL Server
+        max_storage_mb: 100 
+        max_user_connections: 20
+      - name: 1gb 
+        id: REPLACE-WITH-A-UNIQUE-GUID
+        description: Shared MySQL Server
+        max_storage_mb: 1000
+        max_user_connections: 40
+  redis.broker.max_client_connections_default:
+    description: 'Default maxinium number of user clients'
+    default: 20
+### End of Block ######
