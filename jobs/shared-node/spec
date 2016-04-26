@@ -10,6 +10,8 @@ templates:
   nginx.conf.erb: config/nginx.conf
   redis.conf.erb: config/redis.conf
 
+  redis-agent.pem.erb: config/ssl/redis-agent.pem
+  redis-agent.key.erb: config/ssl/redis-agent.key
   drain.sh: bin/drain
 
 packages:
