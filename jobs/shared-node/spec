@@ -21,16 +21,16 @@ packages:
 
 properties:
   redis.statefile_path:
-    default: /var/vcap/store/cf-redis-broker/statefile.json
+    default: /var/vcap/store/sharednode/statefile.json
     description: Path to the broker statefile
   redis.data_directory:
-    default: /var/vcap/store/cf-redis-broker/redis-data
+    default: /var/vcap/store/shared-node/redis-data
     description: The directory which stores the persisted broker data
   redis.log_directory:
     default: /var/vcap/sys/log/redis
     description: The directory which stores the redis server logs
   redis.conf_path:
-    default: /var/vcap/jobs/cf-redis-broker/config/redis.conf
+    default: /var/vcap/jobs/shared-node/config/redis.conf
     description: The shared conf file for all Redis instances
   redis.maxmemory:
     default: 524288000

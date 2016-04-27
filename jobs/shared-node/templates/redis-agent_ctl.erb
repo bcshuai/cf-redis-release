@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+RUN_DIR=/var/vcap/sys/run/shared-node
 LOG_DIR=/var/vcap/sys/log/redis-agent
 DATA_DIR=/var/vcap/store/redis
 PIDFILE=/var/vcap/sys/run/redis-agent.pid
@@ -9,17 +10,26 @@ BACKUP_SOURCE_DIR=<%= p('service-backup.source_folder') %>
 
 source /var/vcap/packages/redis-common/utils.sh
 
+export PATH=/var/vcap/packages/redis/bin:$PATH
+
 case $1 in
 
   start)
 
-    mkdir -p $LOG_DIR $DATA_DIR $BACKUP_SOURCE_DIR
-    chown vcap:vcap $LOG_DIR $DATA_DIR $BACKUP_SOURCE_DIR
+    mkdir -p $RUN_DIR $LOG_DIR $DATA_DIR $INSTANCE_LOG_DIR
+    chown vcap:vcap $RUN_DIR $LOG_DIR $DATA_DIR $INSTANCE_LOG_DIR
 
+    # Recommended for running redis on a VM in production (https://www.pivotaltracker.com/story/show/74949514)
+    sysctl vm.overcommit_memory=1
+
+    # Redis complains if you set maxclients to over the number of open file descriptors.
+    # This value is (maxclients + 32).
+    ulimit -n 10032
+    
     cd $DATA_DIR
 
     echo $$ > $PIDFILE
-    exec chpst -u root:root /var/vcap/packages/cf-redis-broker/bin/agent-sharednode \
+    exec chpst -u vcap:vcap /var/vcap/packages/cf-redis-broker/bin/agent-sharednode \
       -agentConfig=/var/vcap/jobs/shared-node/config/agent.yml \
       >> $LOG_DIR/redis-agent.stdout.log \
       2>> $LOG_DIR/redis-agent.stderr.log
