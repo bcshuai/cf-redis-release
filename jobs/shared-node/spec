@@ -159,7 +159,7 @@ properties:
     default: 6379
 
   ########### Added by Bin Cheng Shuai ####################
-  redis.broekr.shared_nodes:
+  redis.broker.shared_nodes:
     description: List of shared node ips or hostname for the shared service
     default: []
   redis.broker.shared_port:
