@@ -160,6 +160,13 @@ properties:
   redis.broker.dedicated_port:
     description: The port used by the redis instances
     default: 6379
+  ################# Added by Bin Cheng Shuai to support shared redis node####
+  redis.broker.shared_nodes:
+    description: List of shared node ips or host for shared service
+    default: []
+  redis.broker.shared_port:
+    description: The port is used by shared node redis instances
+    default: 6379
 
   redis.broker.name:
     default: redis
@@ -203,4 +210,6 @@ properties:
   redis.broker.max_client_connections_default:
     description: 'Default maxinium number of user clients'
     default: 20
+
+  
 ### End of Block ######

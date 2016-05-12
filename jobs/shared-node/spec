@@ -158,6 +158,14 @@ properties:
     description: The port used by the redis instances
     default: 6379
 
+  ########### Added by Bin Cheng Shuai ####################
+  redis.broekr.shared_nodes:
+    description: List of shared node ips or hostname for the shared service
+    default: []
+  redis.broker.shared_port:
+    description: The port used by the shared node redis instances
+    default: 6379
+
   redis.broker.name:
     default: redis
     description: Name of the broker, to be used in cf commandline operations and by the broker-registrar
