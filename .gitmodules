@@ -7,11 +7,7 @@
 [submodule "src/route-registrar"]
 	path = src/route-registrar
 	url = git@github.com:cloudfoundry-incubator/route-registrar.git
-[submodule "cf-redis-broker"]
-	path = src/cf-redis-broker
-	url = https://github.com/bcshuai/cf-redis-broker.git
-	branch = dev
 [submodule "src/cf-redis-broker"]
 	path = src/cf-redis-broker
-	url = https://github.com/bcshuai/cf-redis-broker.git
-	branch = dev
+	url = https://github.com/bcshuai/cf-redis-broker
+	branch = bluemix
