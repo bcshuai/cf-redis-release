@@ -22,7 +22,7 @@ file_missing() {
 }
 
 generate_self_signed_key_and_cert() {
-  openssl req -nodes -x509 -days 3650 -newkey rsa:1024 -subj '/O=Pivotal/CN=*' \
+  openssl req -nodes -x509 -days 3650 -newkey rsa:2048 -subj '/O=IBM/CN=*' \
   -keyout ${STORE_DIR}/${KEY_FILE} -out ${STORE_DIR}/${CERT_FILE}
 }
 
