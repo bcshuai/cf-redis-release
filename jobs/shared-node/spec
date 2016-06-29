@@ -115,25 +115,13 @@ properties:
     description: The length of the slow log. There is no limit to this length. Just be aware that it will consume memory. You can reclaim memory used by the slow log with SLOWLOG RESET.
     default: 128
 
-  redis.broker.service_name:
-    description: Service name displayed in the catalog metadata
-    default: p-redis
-  redis.broker.service_id:
-    description: Service id displayed in the catalog metadata
-    default: EEA47C3A-569C-4C24-869D-0ADB5B337A4C
-  redis.broker.shared_vm_plan_id:
-    description: Shared-VM plan id displayed in the catalog metadata
-    default: C210CA06-E7E5-4F5D-A5AA-7A2C51CC290E
-  redis.broker.dedicated_vm_plan_id:
-    description: Dedicated-VM plan id displayed in the catalog metadata
-    default: 74E8984C-5F8C-11E4-86BE-07807B3B2589
-  redis.broker.process_check_interval:
+  redis.agent.process_check_interval:
     description: Interval in seconds between checks for dead processes
     default: 10
-  redis.broker.start_redis_timeout:
+  redis.agent.start_redis_timeout:
     description: Maximum wait time in seconds for Redis to start up
     default: 600
-  redis.broker.service_instance_limit:
+  redis.agent.service_instance_limit:
     description: The maximum number of instances allowed
   redis.broker.auth.username:
     default: admin
@@ -141,81 +129,9 @@ properties:
   redis.broker.auth.password:
     default: admin
     description: The password for HTTP Basic Auth on the Broker, also used for the agent
-  redis.broker.backend_port:
-    default: 10005
+  redis.agent.backend_port:
+    default: 9876
     description: The port for the broker unicorn process to run on
-  redis.broker.backend_host:
+  redis.agent.backend_host:
     default: localhost
     description: The port for the broker unicorn process to run on
-  redis.broker.subdomain:
-    default: redis-broker
-    description: Subdomain for route registrar
-
-  redis.broker.dedicated_nodes:
-    description: List of node IPs for the dedicated plan
-    default: []
-  redis.broker.dedicated_port:
-    description: The port used by the redis instances
-    default: 6379
-
-  ########### Added by Bin Cheng Shuai ####################
-  redis.broker.shared_nodes:
-    description: List of shared node ips or hostname for the shared service
-    default: []
-  redis.broker.shared_port:
-    description: The port used by the shared node redis instances
-    default: 6379
-
-  redis.broker.name:
-    default: redis
-    description: Name of the broker, to be used in cf commandline operations and by the broker-registrar
-
-  redis.broker.network:
-    description: The name of the network that the redis broker runs on.
-
-  cf.apps_domain:
-    description: Domain shared by the UAA and CF API eg 'bosh-lite.com'
-  cf.nats.host:
-    description: Hostname/IP of NATS
-  cf.nats.port:
-    description: Port that NATS listens on
-  cf.nats.username:
-    description: The user to use when authenticating with NATS
-  cf.nats.password:
-    description: The password to use when authenticating with NATS
-
-## added by Bin Cheng Shuai ######
-  redis.broker.test:
-    default: value
-    description: for testing
-  redis.broker.serviceKeysSupported:
-    defalut: false
-    description: Support service keys or not
-  redis.broker.services:
-    description: 'Services and plans offered by the broker'
-    example: |
-      plans:
-      - name: 100mb
-        id: REPLACE-WITH-A-UNIQUE-GUID
-        description: Shared MySQL Server
-        max_storage_mb: 100 
-        max_user_connections: 20
-      - name: 1gb 
-        id: REPLACE-WITH-A-UNIQUE-GUID
-        description: Shared MySQL Server
-        max_storage_mb: 1000
-        max_user_connections: 40
-  redis.broker.max_client_connections_default:
-    description: 'Default maxinium number of user clients'
-    default: 20
-
-  redis.broker.ssl.pem:
-    description: SSL Certificate for broker (PEM encoded)
-  redis.broker.ssl.key:
-    description: SSL private key for broker (PEM encoded)
-
-  redis.agent.backend_port:
-    description: The backend port for the redis-agent process to listen on
-    default: 9876
-
-### End of Block ######

@@ -138,7 +138,7 @@ properties:
     description: SSL Certificate for broker (PEM encoded)
   redis.broker.ssl.key:
     description: SSL private key for broker (PEM encoded)
-  redis.broker.start_redis_timeout:
+  redis.agent.start_redis_timeout:
     description: Maximum wait time in seconds for Redis to start up
     default: 600
 

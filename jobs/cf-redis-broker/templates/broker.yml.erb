@@ -15,115 +15,100 @@
   end
   ip = discover_external_ip
 %>
-redis:
-  service_name: <%= p('redis.broker.service_name') %>
-  service_id: <%= p('redis.broker.service_id') %>
-  shared_vm_plan_id: <%= p('redis.broker.shared_vm_plan_id') %>
-  dedicated_vm_plan_id: <%= p('redis.broker.dedicated_vm_plan_id') %>
-  host: <%= ip %>
-  data_directory: <%= p('redis.data_directory') %>
-  redis_conf_path: <%= p('redis.conf_path') %>
-  log_directory: <%= p('redis.log_directory') %>
-  process_check_interval: <%= p('redis.broker.process_check_interval') %>
-  start_redis_timeout: <%= p('redis.broker.start_redis_timeout') %>
-  service_instance_limit: <%= p('redis.broker.service_instance_limit') %>
-  shared:
-    nodes: <%= p('redis.broker.shared_nodes') %>
-    port: <%= p('redis.broker.shared_port') %>
-  dedicated:
-    nodes: <%= p('redis.broker.dedicated_nodes') %>
-    port: <%= p('redis.broker.dedicated_port') %>
-    statefile_path: <%= p('redis.statefile_path') %>
-  services:
-  <% p('redis.broker.services').each do |service| %>
-  - id: <%= service["id"] %>
-    name: <%= service["name"] %>
-    plan_updateable: <%= service["plan_updateable"] %>
-    description: <%= service["description"] %>
-    bindable: <%= service["bindable"] %>
-    metadata:
-      displayName: <%= service['metadata']['displayName'] %>
-      imageUrl: <%= service['metadata']['imageUrl'] %>
-      smallImageUrl: <%= service["metadata"]["smallImageUrl"]%>
-      mediumImageUrl: <%= service["metadata"]["mediumImageUrl"]%>
-      featuredImageUrl: <%= service["metadata"]["featuredImageUrl"]%>
-      longDescription: <%= service['metadata']['longDescription'] %>
-      providerDisplayName: <%= service['metadata']['providerDisplayName'] %>
-      documentationUrl: <%= service['metadata']['documentationUrl'] %>
-      supportUrl: <%= service['metadata']['supportUrl'] %>
-      serviceKeysSupported: <%= service['metadata']['serviceKeysSupported'] %>
-      serviceMonitorApi: <%= service["metadata"]["serviceMonitorApi"]%>
-      type: <%= service['metadata']['type'] %>
-    tags:
-    <% (service['tags'] || []).each do |tag| %>
-    - <%= tag %>
-    <% end %>
-    plans:
-    <% (service['plans'] || []).each do |plan| %>
-      - id: <%= plan['id'] || plan['guid'] %>
-        <%
-          if plan['name'] !~ /^[a-z0-9\_\-]+$/
-            raise "Plan name '#{plan['name']}' must only contain lowercase letters, numbers, hyphen(-), or underscore(_)."
-          end
-        %>
-        name: <%= plan['name'] %>
-        description: <%= plan['description'] %>
-        free: <%= plan["free"]%>
-        max_memory_mb: <%= plan['max_memory_mb'] %>
-
-        <% max_client_connections = plan['max_client_connections'] || p('redis.broker.max_client_connections_default') %>
-        max_client_connections: <%= max_client_connections %>
-
-        <%
-        if !plan['metadata']
-          costs = []
-          bullets = [
-            "#{plan['description']}",
-            "#{plan['max_memory_mb']} MB storage",
-            "#{max_client_connections} concurrent connections"
-          ]
-          display_name = plan['name']
-        else
-          costs = plan['metadata']['costs'] || []
-          bullets = plan['metadata']['bullets'] || []
-          display_name = plan['metadata']['displayName']
-        end
-        %>
-
-        metadata:
-          <% if costs.empty? %>
-          costs:
-          - amount:
-              usd: 0.0
-            unit: MONTH
-          <% else %>
-          costs:
-          <% costs.each do |cost| %>
-            - amount:
-                usd: <%= cost['amount']['usd'] %>
-              unit: <%= cost['unit'] %>
-          <% end %>
-          <% end %>
-
-          <% if bullets.empty? %>
-          bullets: []
-          <% else %>
-          bullets:
-          <% bullets.each do |bullet| %>
-            - <%= bullet %>
-          <% end %>
-          <% end %>
-
-          displayName: <%= display_name %>
-    <% end %>
+service_name: <%= p('redis.broker.service_name') %>
+shared:
+  nodes: <%= p('redis.broker.shared_nodes') %>
+  port: <%= p('redis.broker.shared_port') %>
+dedicated:
+  nodes: <%= p('redis.broker.dedicated_nodes') %>
+  port: <%= p('redis.broker.dedicated_port') %>
+  statefile_path: <%= p('redis.broker.statefile_path') %>
+services:
+<% p('redis.broker.services').each do |service| %>
+- id: <%= service["id"] %>
+  name: <%= service["name"] %>
+  plan_updateable: <%= service["plan_updateable"] %>
+  description: <%= service["description"] %>
+  bindable: <%= service["bindable"] %>
+  metadata:
+    displayName: <%= service['metadata']['displayName'] %>
+    imageUrl: <%= service['metadata']['imageUrl'] %>
+    smallImageUrl: <%= service["metadata"]["smallImageUrl"]%>
+    mediumImageUrl: <%= service["metadata"]["mediumImageUrl"]%>
+    featuredImageUrl: <%= service["metadata"]["featuredImageUrl"]%>
+    longDescription: <%= service['metadata']['longDescription'] %>
+    providerDisplayName: <%= service['metadata']['providerDisplayName'] %>
+    documentationUrl: <%= service['metadata']['documentationUrl'] %>
+    supportUrl: <%= service['metadata']['supportUrl'] %>
+    serviceKeysSupported: <%= service['metadata']['serviceKeysSupported'] %>
+    serviceMonitorApi: <%= service["metadata"]["serviceMonitorApi"]%>
+    type: <%= service['metadata']['type'] %>
+  tags:
+  <% (service['tags'] || []).each do |tag| %>
+  - <%= tag %>
   <% end %>
+  plans:
+  <% (service['plans'] || []).each do |plan| %>
+    - id: <%= plan['id'] || plan['guid'] %>
+      <%
+        if plan['name'] !~ /^[a-z0-9\_\-]+$/
+          raise "Plan name '#{plan['name']}' must only contain lowercase letters, numbers, hyphen(-), or underscore(_)."
+        end
+      %>
+      name: <%= plan['name'] %>
+      description: <%= plan['description'] %>
+      free: <%= plan["free"]%>
+      max_memory_mb: <%= plan['max_memory_mb'] %>
+      <% max_client_connections = plan['max_client_connections'] || p('redis.broker.max_client_connections_default') %>
+      max_client_connections: <%= max_client_connections %>
+
+      <%
+      if !plan['metadata']
+        costs = []
+        bullets = [
+          "#{plan['description']}",
+          "#{plan['max_memory_mb']} MB storage",
+          "#{max_client_connections} concurrent connections"
+        ]
+        display_name = plan['name']
+      else
+        costs = plan['metadata']['costs'] || []
+        bullets = plan['metadata']['bullets'] || []
+        display_name = plan['metadata']['displayName']
+      end
+      %>
+
+      metadata:
+        <% if costs.empty? %>
+        costs:
+        - amount:
+            usd: 0.0
+          unit: MONTH
+        <% else %>
+        costs:
+        <% costs.each do |cost| %>
+          - amount:
+              usd: <%= cost['amount']['usd'] %>
+            unit: <%= cost['unit'] %>
+        <% end %>
+        <% end %>
+
+        <% if bullets.empty? %>
+        bullets: []
+        <% else %>
+        bullets:
+        <% bullets.each do |bullet| %>
+          - <%= bullet %>
+        <% end %>
+        <% end %>
+
+        displayName: <%= display_name %>
+  <% end %>
+<% end %>
 auth:
   username: <%= p('redis.broker.auth.username') %>
   password: <%= p('redis.broker.auth.password') %>
 
 backend_host: localhost
 backend_port: <%= p('redis.broker.backend_port') %>
-agent_port: 443
-
-monit_executable_path: /var/vcap/bosh/bin/monit
-redis_server_executable_path: /var/vcap/packages/redis/bin/redis-server
+agent_port: <%= p('redis.broker.agent_port') %>
