@@ -187,26 +187,75 @@ properties:
     description: The password to use when authenticating with NATS
 
 ## added by Bin Cheng Shuai ######
-  redis.broker.test:
-    default: value
-    description: for testing
   redis.broker.serviceKeysSupported:
     defalut: false
     description: Support service keys or not
   redis.broker.services:
-    description: 'Services and plans offered by the broker'
+    default: []
     example: |
+      id:
+        description: redis broker id
+      name:
+        description: redis broler name
+        default: redis
+      bindable:
+        description: indicates whether service instances can be bound to applications
+        default: true
+      description: Services and plans offered by the broker
+      plan_updateable:
+        description: indicates whether the service supports plan changes
+        default: false
+      metadata:
+        displayName:
+          description: The name that is displayed in the Bluemix user interface for a service.
+        imageUrl:
+          description: The URL of a large image
+        smallImageUrl:
+          description: the url of a small image
+        mediumImageUrl:
+          description: the url of a medirm image
+        featuredImageUrl:
+          description: the url of a feature image
+        longDescription:
+          description: the description of the service
+        providerDisplayName:
+          description: the provider of the service
+          default: IBM BlueMix
+        documentationUrl:
+          description: the url of the document
+        supportUrl:
+          description: The URL of documentation about the service.
+        serviceKeysSupported:
+          description: A boolean value that indicates whether the service keys API is supported
+          default: false
+        serviceMonitorApi:
+          description: the monitor api
+        type:
+          description: The type of the service.
+          default: referral
+      tags:
+      - data_management
+      - ibm_created
+ 
       plans:
-      - name: 100mb
-        id: REPLACE-WITH-A-UNIQUE-GUID
-        description: Shared MySQL Server
-        max_storage_mb: 100 
-        max_user_connections: 20
-      - name: 1gb 
-        id: REPLACE-WITH-A-UNIQUE-GUID
-        description: Shared MySQL Server
-        max_storage_mb: 1000
-        max_user_connections: 40
+      - description: Shared Reis Server
+        id: ab08f1bc-e6fc-4b56-a767-ee0fea794365
+        max_memory_mb: 128
+        max_client_connections: 20
+        free: false
+        name: 128mb_20_connections
+      - description: Shared Redis Server
+        id: de08f1bc-e6fc-4b56-a767-ee0fe7943765
+        max_memory_mb: 256
+        free: false
+        max_client_connections: 30
+        name: 256mb_30_connections
+      - description: Shared Redis Server
+        id: 11d0aa36-dcec-4021-85f5-ea4d9a796300
+        max_memory_mb: 256
+        free: false
+        max_client_connections: 80
+        name: 256mb_80_connections
   redis.broker.max_client_connections_default:
     description: 'Default maxinium number of user clients'
     default: 20

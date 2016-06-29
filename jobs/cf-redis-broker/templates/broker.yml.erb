@@ -40,14 +40,19 @@ redis:
     name: <%= service["name"] %>
     plan_updateable: <%= service["plan_updateable"] %>
     description: <%= service["description"] %>
+    bindable: <%= service["bindable"] %>
     metadata:
       displayName: <%= service['metadata']['displayName'] %>
       imageUrl: <%= service['metadata']['imageUrl'] %>
+      smallImageUrl: <%= service["metadata"]["smallImageUrl"]%>
+      mediumImageUrl: <%= service["metadata"]["mediumImageUrl"]%>
+      featuredImageUrl: <%= service["metadata"]["featuredImageUrl"]%>
       longDescription: <%= service['metadata']['longDescription'] %>
       providerDisplayName: <%= service['metadata']['providerDisplayName'] %>
       documentationUrl: <%= service['metadata']['documentationUrl'] %>
       supportUrl: <%= service['metadata']['supportUrl'] %>
       serviceKeysSupported: <%= service['metadata']['serviceKeysSupported'] %>
+      serviceMonitorApi: <%= service["metadata"]["serviceMonitorApi"]%>
       type: <%= service['metadata']['type'] %>
     tags:
     <% (service['tags'] || []).each do |tag| %>
@@ -63,6 +68,7 @@ redis:
         %>
         name: <%= plan['name'] %>
         description: <%= plan['description'] %>
+        free: <%= plan["free"]%>
         max_memory_mb: <%= plan['max_memory_mb'] %>
 
         <% max_client_connections = plan['max_client_connections'] || p('redis.broker.max_client_connections_default') %>
